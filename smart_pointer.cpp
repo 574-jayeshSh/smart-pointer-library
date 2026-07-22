@@ -10,12 +10,26 @@ class UniquePointer{
     T* ptr;
     public:
     explicit UniquePointer(T* p) : ptr(p){}
+
+    UniquePointer(UniquePointer&& other){
+        ptr = other.ptr;
+        other.ptr = nullptr;
+    }
+    
     ~UniquePointer(){
         cout << "Memory freed" << endl;
         delete ptr;
     }
 
     T& operator*(){return *ptr;}
+    UniquePointer& operator=(UniquePointer&& other){
+        if(this != &other){
+            delete ptr;
+            ptr = other.ptr;
+            other.ptr = nullptr;
+        }
+        return *this;
+    }
 };
 
 template<typename P>
@@ -99,25 +113,10 @@ int main(){
 
     UniquePointer<int> p(new int(10));
     UniquePointer<int> p1(new int(20));
+    
 
-    SharedPtr<int> p2(new int(30));
-    SharedPtr<int> p3 = p2;
-
-    SharedPtr<int> sp(new int(40));
-    WeekPtr<int> wp(sp);
-
-    cout << "Is expired: " << wp.expired() << endl;
-    SharedPtr<int> sp1 = wp.lock();
-    if(sp1){
-        cout << "Value:"<< *sp1 << endl;
-    }
-    else{
-        cout << "Object is already deleted" << endl;
-    }
-    cout << *p << endl;
-    cout << *p1 << endl;
-    cout << *p2 << endl;
-    cout << *p3 << endl;
+    p =move(p1);
+    
     return 0;
 
 }
