@@ -1,2 +1,48 @@
-.vscode
-.exe
+# Compiled Object files
+*.o
+*.obj
+*.out
+
+# Executables
+*.exe
+*.a
+*.so
+*.dll
+*.dylib
+
+# Build directories
+build/
+Build/
+cmake-build-debug/
+cmake-build-release/
+Debug/
+Release/
+bin/
+lib/
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+*.code-workspace
+
+# CMake
+CMakeFiles/
+cmake_install.cmake
+CMakeCache.txt
+Makefile
+
+# Dependencies
+*.d
+*.dep
+
+# Temporary files
+*.tmp
+.cache/
+
+# OS-specific
+Thumbs.db
+.DS_Store
