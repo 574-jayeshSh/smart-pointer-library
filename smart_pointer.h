@@ -43,6 +43,11 @@ struct ControlBlock{
     int* weakCount;
 
     ControlBlock(P* p): ptr(p), strongCount(new int(1)), weakCount(new int(0)) {}
+
+    ~ControlBlock(){
+        delete strongCount;
+        delete weakCount;
+    }
 };
 
 template<typename P>
@@ -66,8 +71,6 @@ class SharedPtr{
                     delete sp->ptr;
                 }
                 if(*sp->strongCount == 0 && *sp->weakCount == 0){
-                    delete sp->strongCount;
-                    delete sp->weakCount;
                     delete sp;
                 }
             }
@@ -78,7 +81,7 @@ class SharedPtr{
         }
         return *this;
     }
-    
+
     ~SharedPtr(){
         if(sp == nullptr) return;
         (*sp->strongCount)--;
@@ -88,8 +91,6 @@ class SharedPtr{
             delete sp->ptr; 
         }
         if(*sp->strongCount == 0 && *sp->weakCount == 0){
-            delete sp->strongCount;
-            delete sp->weakCount;
             delete sp; 
         }
     }
@@ -129,8 +130,6 @@ class WeekPtr{
             if(wp != nullptr){
                 (*wp->weakCount)--;
                 if(*wp->strongCount == 0 && *wp->weakCount == 0){
-                    delete wp->strongCount;
-                    delete wp->weakCount;
                     delete wp;
                 }
             }
@@ -145,8 +144,6 @@ class WeekPtr{
             if(wp != nullptr){
                 (*wp->weakCount)--;
                 if(*wp->strongCount == 0 && *wp->weakCount == 0){
-                    delete wp->strongCount;
-                    delete wp->weakCount;
                     delete wp;
                 }
             }
@@ -164,7 +161,7 @@ class WeekPtr{
         }
     }
     bool expired(){
-        return (wp->strongCount == nullptr || *wp->strongCount == 0);
+        return (wp == nullptr || wp->strongCount == nullptr || *wp->strongCount == 0);
     }   
 };
 
